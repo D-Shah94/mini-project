@@ -1,0 +1,5 @@
+DPDgroup
+parcel2go 
+Hermes
+Parcelforce
+DHL
