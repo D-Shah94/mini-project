@@ -8,8 +8,24 @@ def import_couriers():
             for i in file1:
                 couriers.append(i.strip("\n"))
 
+
+# def import_orders():
+#     with open("orders.txt", "r") as file:
+#         csv_file = csv.DictReader(file)
+#         for row in csv_file:
+#             order_list.append(row)
+
+
+#so far added orders in the same context as products & couriers
+#need to make changes from list context to dictionary context, be aware of conflicts
+
+def import_orders():
+        with open("orders.txt", "r") as file1:
+            for i in file1:
+                orders.append(i.strip("\n"))
+
 def main_menu():
-    print("\nMain menu", "Choose option:", "[0] Save and Exit", "[1] Products","[2] Couriers", sep = "\n")
+    print("\nMain menu", "Choose option:", "[0] Save and Exit", "[1] Products","[2] Couriers", "[3] Orders", sep = "\n")
     options = int(input("Enter number here: "))
     if options == 0:
         print("Goodbye")
@@ -18,6 +34,8 @@ def main_menu():
         product_menu()
     elif options == 2:
         courier_menu()
+    elif options == 3:
+        order_menu()
     else:
         print("\nEntry Error: Please try again") # maybe try and except here instead? / change numbers to strings
         main_menu()
@@ -40,6 +58,12 @@ def save_exit():
                 f.append(courier)
             for i in f:
                 file3.write(i + "\n")
+        with open("orders.txt", "w") as file4:
+            f = []
+            for order in orders:
+                f.append(order)
+            for i in f:
+                file4.write(i + "\n")
         print("\nSaved! Goodbye")
         exit()
         main_menu()
@@ -56,6 +80,12 @@ def save_exit():
                 f.append(courier)
             for i in f:
                 file3.write(i + "\n")
+        with open("orders.txt", "w") as file4:
+            f = []
+            for order in orders:
+                f.append(order)
+            for i in f:
+                file4.write(i + "\n")
         print("\nSaved!")
         main_menu()
     elif options == 3:
@@ -108,7 +138,7 @@ def courier_menu():
         courier_menu()
     elif options == 3:
         update_list(couriers, "courier")
-        product_menu()
+        courier_menu()
     elif options == 4:
         delete_from_list(couriers, "courier")
         courier_menu()
@@ -116,6 +146,26 @@ def courier_menu():
         print("\nEntry Error: Please try again")
         courier_menu()
 
+def order_menu():
+    print("\nOrder Menu","Choose option:", "[0] Return to Main Menu", "[1] Print Orders", "[2] Add Order", "[3] Update Order", "[4] Delete Order", sep = "\n")
+    options = int(input("Enter number here: "))
+    if options == 0:
+        main_menu()
+    elif options == 1:
+        print("\n", orders)
+        order_menu()
+    elif options == 2:
+        add_to_list(orders,"order")
+        order_menu()
+    elif options == 3:
+        update_list(orders, "order")
+        order_menu()
+    elif options == 4:
+        delete_from_list(orders, "order")
+        order_menu()
+    else:
+        print("\nEntry Error: Please try again")
+        order_menu()
 
 #list in argument is imported list[], name is the name of the list (saves having to create multiple different operation functions)
 
@@ -123,7 +173,6 @@ def add_to_list(list, name):
     new_item = str(input(f"Enter the name of your new {name}: "))
     list.append(new_item)
     return(list)
-
 
 def update_list(list, name):
     print(f"\nChoose {name} to update:")
@@ -168,11 +217,57 @@ def delete_from_list(list, name):
 
 products = []
 couriers = []
+orders = []
+
 
 import_products()
 import_couriers()
+import_orders()
 main_menu()
 
 
+def add_to_dict(list, name):
+    new_item = str(input(f"Enter the name of your new {name}: "))
+    list.append(new_item)
+    return(list)
 
+def update_dict(list, name):
+    print(f"\nChoose {name} to update:")
+    print(f"[0] Return to {name.capitalize()} Menu")
+    for item in list:
+        print(f"[{list.index(item) + 1}] {item}")
+    options = int(input("Enter number here: "))
+    if options == 0:
+        return(list)
+    elif (options >= 0) and (options <= len(list)):
+        print(f"You have chosen: {list[options -1]}")
+        updated_item = str(input(f"Enter updated {name}: "))
+        list[options -1] = updated_item
+        return(list)
+    else:
+        print("\nEntry Error: Please try again")
+        return(list)
 
+def delete_from_dict(list, name):
+    print(f"\nChoose {name} to delete:")
+    print(f"[0] Return to {name.capitalize()} Menu")
+    for item in list:
+        print(f"[{list.index(item) + 1}] {item}")
+    options = int(input("Enter number here: "))
+    if options == 0:
+        return(list)
+    elif (options >= 0) and (options) <= len(list):
+        print(f"You have chosen: {list[options - 1]}. Are you sure you want to continue?")
+        confirmation_dialogue = str(input("[Y] for yes, [N] for no: "))
+        if confirmation_dialogue == "Y" or confirmation_dialogue == "y":
+            print(f"You have deleted {list[options - 1]}")
+            list.remove(list[options -1])
+            return(list)
+        elif confirmation_dialogue == "N" or confirmation_dialogue == "n":
+            return(list)
+        else:
+            print(f"\nEntry Error: Returning to {name.capitalize()} Menu")
+            return(list)
+    else:
+        print("\nEntry Error: Please try again")
+        return(list)
