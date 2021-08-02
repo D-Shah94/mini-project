@@ -1,4 +1,0 @@
-coffee
-tea
-coke
-pepsi

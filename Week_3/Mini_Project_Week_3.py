@@ -1,3 +1,5 @@
+import csv
+
 def import_products():
         with open("products.txt", "r") as file1:
             for i in file1:
@@ -8,21 +10,15 @@ def import_couriers():
             for i in file1:
                 couriers.append(i.strip("\n"))
 
-
-# def import_orders():
-#     with open("orders.txt", "r") as file:
-#         csv_file = csv.DictReader(file)
-#         for row in csv_file:
-#             order_list.append(row)
+def import_orders():
+    with open("orders.csv", "r") as file1:
+        csv_file = csv.DictReader(file1)
+        for row in csv_file:
+            orders.append(row)
 
 
 #so far added orders in the same context as products & couriers
 #need to make changes from list context to dictionary context, be aware of conflicts
-
-def import_orders():
-        with open("orders.txt", "r") as file1:
-            for i in file1:
-                orders.append(i.strip("\n"))
 
 def main_menu():
     print("\nMain menu", "Choose option:", "[0] Save and Exit", "[1] Products","[2] Couriers", "[3] Orders", sep = "\n")
@@ -155,13 +151,13 @@ def order_menu():
         print("\n", orders)
         order_menu()
     elif options == 2:
-        add_to_list(orders,"order")
+        add_to_dict(orders,"order")
         order_menu()
     elif options == 3:
-        update_list(orders, "order")
+        update_dict(orders)
         order_menu()
     elif options == 4:
-        delete_from_list(orders, "order")
+        delete_from_dict(orders, "order")
         order_menu()
     else:
         print("\nEntry Error: Please try again")
@@ -215,6 +211,52 @@ def delete_from_list(list, name):
         print("\nEntry Error: Please try again")
         return(list)
 
+def update_dict(orders):
+    print("orders: ")
+    order_total = 0
+    
+    for k, v in orders.items():
+        print(str(v) + ' ' + k)
+        order_total += v
+    print("Total number of orders: " + str(order_total))
+
+
+# def add_to_dict(orders):
+#     print("orders: ")
+#     order_total = 0
+    
+#     for k, v in orders.items():
+#         print(str(v) + ' ' + k)
+#         order_total += v
+#     print("Total number of orders: " + str(order_total))
+#     str(input(f'"customer_name: {}","customer_address: {}","customer_phone: {}","courier: {}","status: {}"] = str(input(f"Enter the new customer name: {customer_name}"))')
+#     return(order_menu)
+
+#this part of the code displays your current inventory
+# def displayInventory(inventory): 
+#     print('Inventory:')
+#     item_total = 0
+
+#     for k, v in inventory.items():
+#         print(str(v) + ' ' + k)
+#         item_total += v
+#     print("Total number of items: " + str(item_total))
+
+# #this launches the function that displays your inventory
+# displayInventory(stuff) 
+
+# dragonLoot = ['gold coin', 'dagger', 'gold coin', 'gold coin', 'ruby']
+
+# # this part is the function that adds the loot to the inventory
+# def addToInventory (inventory, addedItems): 
+
+#     print('Your inventory now has:')
+
+# #Does the dict has the item? If yes, add plus one, the default being 0
+#     for item in addedItems:
+#         stuff[item] = stuff.get(item, 0) + 1 
+
+
 products = []
 couriers = []
 orders = []
@@ -226,48 +268,48 @@ import_orders()
 main_menu()
 
 
-def add_to_dict(list, name):
-    new_item = str(input(f"Enter the name of your new {name}: "))
-    list.append(new_item)
-    return(list)
+# def add_to_dict(dictionary_list, orders):
+#     key, val = str(input(f"Enter the name of your new {customer_name}: "))
+#     dictionary_list.append(orders)
+#     return(dictionary_list)
 
-def update_dict(list, name):
-    print(f"\nChoose {name} to update:")
-    print(f"[0] Return to {name.capitalize()} Menu")
-    for item in list:
-        print(f"[{list.index(item) + 1}] {item}")
-    options = int(input("Enter number here: "))
-    if options == 0:
-        return(list)
-    elif (options >= 0) and (options <= len(list)):
-        print(f"You have chosen: {list[options -1]}")
-        updated_item = str(input(f"Enter updated {name}: "))
-        list[options -1] = updated_item
-        return(list)
-    else:
-        print("\nEntry Error: Please try again")
-        return(list)
+# def update_dict(list, name):
+#     print(f"\nChoose {name} to update:")
+#     print(f"[0] Return to {name.capitalize()} Menu")
+#     for item in list:
+#         print(f"[{list.index(item) + 1}] {item}")
+#     options = int(input("Enter number here: "))
+#     if options == 0:
+#         return(list)
+#     elif (options >= 0) and (options <= len(list)):
+#         print(f"You have chosen: {list[options -1]}")
+#         updated_item = str(input(f"Enter updated {name}: "))
+#         list[options -1] = updated_item
+#         return(list)
+#     else:
+#         print("\nEntry Error: Please try again")
+#         return(list)
 
-def delete_from_dict(list, name):
-    print(f"\nChoose {name} to delete:")
-    print(f"[0] Return to {name.capitalize()} Menu")
-    for item in list:
-        print(f"[{list.index(item) + 1}] {item}")
-    options = int(input("Enter number here: "))
-    if options == 0:
-        return(list)
-    elif (options >= 0) and (options) <= len(list):
-        print(f"You have chosen: {list[options - 1]}. Are you sure you want to continue?")
-        confirmation_dialogue = str(input("[Y] for yes, [N] for no: "))
-        if confirmation_dialogue == "Y" or confirmation_dialogue == "y":
-            print(f"You have deleted {list[options - 1]}")
-            list.remove(list[options -1])
-            return(list)
-        elif confirmation_dialogue == "N" or confirmation_dialogue == "n":
-            return(list)
-        else:
-            print(f"\nEntry Error: Returning to {name.capitalize()} Menu")
-            return(list)
-    else:
-        print("\nEntry Error: Please try again")
-        return(list)
+# def delete_from_dict(list, name):
+#     print(f"\nChoose {name} to delete:")
+#     print(f"[0] Return to {name.capitalize()} Menu")
+#     for item in list:
+#         print(f"[{list.index(item) + 1}] {item}")
+#     options = int(input("Enter number here: "))
+#     if options == 0:
+#         return(list)
+#     elif (options >= 0) and (options) <= len(list):
+#         print(f"You have chosen: {list[options - 1]}. Are you sure you want to continue?")
+#         confirmation_dialogue = str(input("[Y] for yes, [N] for no: "))
+#         if confirmation_dialogue == "Y" or confirmation_dialogue == "y":
+#             print(f"You have deleted {list[options - 1]}")
+#             list.remove(list[options -1])
+#             return(list)
+#         elif confirmation_dialogue == "N" or confirmation_dialogue == "n":
+#             return(list)
+#         else:
+#             print(f"\nEntry Error: Returning to {name.capitalize()} Menu")
+#             return(list)
+#     else:
+#         print("\nEntry Error: Please try again")
+#         return(list)
